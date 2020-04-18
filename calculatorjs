@@ -1,0 +1,60 @@
+const math = require('mathjs');
+
+var EquationText = "";
+
+document.addEventListener('click', function(e) {
+    var target = e.target;
+    if (target.matches("td")) {
+        DrawOnScreen(Equation(target));
+    }
+});
+
+function Equation(e) {
+    let input = e.getAttribute("value");
+
+    if (input == "delete") {
+        EquationText = EquationText.substring(0, EquationText.length - 1);
+        return EquationText;
+    } else if (input == "reset") {
+        EquationText = "";
+        return EquationText;
+    }
+
+    if (input == "r") {
+        if (OperatorChecker(EquationText.charAt(EquationText.length - 1))) EquationText = EquationText.substring(0, EquationText.length - 1);
+        EquationText = math.evaluate(EquationText).toString();
+        return EquationText;
+    }
+
+    if (OperatorChecker(input) && EquationText == "") return EquationText;
+
+    if (OperatorChecker(EquationText.charAt(EquationText.length - 1)) && OperatorChecker(input)) {
+        EquationText = EquationText.substring(0, EquationText.length - 1);
+        EquationText += input;
+    } else EquationText += input;
+
+    return EquationText;
+}
+
+function DrawOnScreen(e) {
+    document.querySelector(".screen").innerHTML = e;
+}
+
+function OperatorChecker(e) {
+    switch(e) {
+        case "+":
+            return true;
+            break;
+        case "-":
+            return true;
+            break;
+        case "*":
+            return true;
+            break;
+        case "/":
+            return true;
+            break;
+        default:
+            return false;
+    }
+}
