@@ -1,0 +1,80 @@
+const refreshTime = 2000;
+let canLoop = true;
+let carouselDiv = document.querySelectorAll('.content .carouselImg');
+let canSlide = true;
+let lastSlide = "";
+
+setInterval(() => {
+    if (canLoop) forward();
+}, refreshTime);
+
+for (let i = 0; i < carouselDiv.length; i++) {
+    carouselDiv[i].style.backgroundImage = `url("${attr(carouselDiv[i], 'src')}")`;
+    carouselDiv[i].setAttribute('id', `image${i + 1}`);
+}
+
+function attr(element, attrName) {
+    return element.getAttribute(attrName)
+}
+
+function slide(element, {from, to}, timing) {
+    timing = timing || 1500;
+    element.animate([
+        {marginLeft: from},
+        {marginLeft: to}
+    ], {
+        duration: timing,
+        easing: 'ease'
+    })
+    setTimeout(() => {
+        element.style.marginLeft = to;
+        canSlide = true;
+    }, timing);
+}
+
+function backwards() {
+    if (sliderContent.length <= 1) canSlide = false;
+    if (!canSlide) return;
+    canSlide = false;
+    slider = document.querySelector('.slider');
+    let firstChild = slider.firstElementChild;
+    let lastChild = slider.lastElementChild;
+    if (lastSlide == 'backwards' || lastSlide == '') {
+        slider.insertBefore(lastChild, firstChild);
+    }
+    lastSlide = 'backwards';
+    slide(slider, {from: '-100%', to: '0%'});
+}
+
+function forward() {
+    if (sliderContent.length <= 1) canSlide = false;
+    if (!canSlide) return;
+    canSlide = false;
+    slider = document.querySelector('.slider');
+    let firstChild = slider.firstElementChild;
+    if (lastSlide == 'forward') {
+        slider.appendChild(firstChild);
+    }
+    lastSlide = 'forward';
+    slide(slider, {from: '0%', to: '-100%'});
+}
+
+// =========================== Listeners ============================== //
+
+let slider = document.querySelector('.slider');
+let sliderContent = document.querySelectorAll('.slider .carouselImg');
+document.querySelector('.backwards').addEventListener('click', () => {
+    backwards();
+});
+
+document.querySelector('.forward').addEventListener('click', () => {
+    forward();
+});
+
+document.querySelector('.slider').addEventListener('mouseover', () => {
+    canLoop = false;
+})
+
+document.querySelector('.slider').addEventListener('mouseleave', () => {
+    canLoop = true;
+})
