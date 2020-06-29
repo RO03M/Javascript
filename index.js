@@ -1,4 +1,4 @@
-const timer_attr = document.querySelector('.loader').getAttribute('timer');//tempo para passar para o próximo número
+const timer_attr = document.querySelector('.loader').getAttribute('timer');//time to the next number
 let valuesArray = []
 let count = 0;
 let line = 0;
@@ -11,7 +11,7 @@ document.querySelector('.bubble').addEventListener('click', function() {
 function loader(timer_attr) {
     const width = 100 / (timer_attr * 1000);
     let loaderBar = document.querySelector('.loader');
-    let actualWidth = loaderBar.getBoundingClientRect().width;//return width in percentage holy fuck thanks for that
+    let actualWidth = loaderBar.getBoundingClientRect().width;//return width in percentage
     if (actualWidth >= 100) {
         actualWidth = 0;
         sorter();
